@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Private, browser-based CV analysis and job matching with transparent scoring.">
+  <meta name="theme-color" content="#101827">
+  <title>CV Match Studio</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#workspace" aria-label="CV Match Studio home">
+      <span class="brand-mark" aria-hidden="true">CM</span>
+      <span>CV Match Studio</span>
+    </a>
+    <div class="privacy-pill"><span></span> Processed in your browser</div>
+    <button class="ghost small" id="clearDataButton" type="button">Clear my data</button>
+  </header>
+
+  <main id="workspace">
+    <section class="intro" aria-labelledby="pageTitle">
+      <div>
+        <p class="eyebrow">Honest CV tailoring</p>
+        <h1 id="pageTitle">See what matches. Fix what doesn’t.</h1>
+        <p>Compare your CV with a job description using evidence-based, explainable checks. Nothing is uploaded.</p>
+      </div>
+      <div class="method-note">
+        <span class="method-number">01</span>
+        <p><strong>No invented experience.</strong> Suggested CV text only uses facts found in your CV or details you confirm.</p>
+      </div>
+    </section>
+
+    <section class="input-grid" aria-label="CV and job description inputs">
+      <article class="input-card">
+        <div class="card-heading">
+          <div><span class="step">Step 1</span><h2>Job description</h2></div>
+          <span class="counter" id="jobCounter">0 words</span>
+        </div>
+        <textarea id="jobText" aria-label="Job description" placeholder="Paste the full job description here..."></textarea>
+        <p class="input-hint">Include responsibilities and required or preferred qualifications for the strongest analysis.</p>
+      </article>
+
+      <article class="input-card">
+        <div class="card-heading">
+          <div><span class="step">Step 2</span><h2>Your CV</h2></div>
+          <span class="counter" id="cvCounter">0 words</span>
+        </div>
+        <textarea id="cvText" aria-label="CV text" placeholder="Paste your CV here, or choose a file below..."></textarea>
+        <div class="file-row">
+          <label class="file-button" for="cvFile">Choose PDF, DOCX or TXT</label>
+          <input id="cvFile" type="file" accept=".pdf,.docx,.txt,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <span id="fileName">No file selected</span>
+        </div>
+        <p class="input-hint" id="parseNote">Files are read locally and are never sent to a server.</p>
+      </article>
+    </section>
+
+    <div class="action-bar">
+      <label class="check"><input id="saveDraft" type="checkbox"> Save this draft on this device</label>
+      <button class="primary" id="analyseButton" type="button"><span>Analyse CV</span><span aria-hidden="true">↗</span></button>
+    </div>
+
+    <section id="results" class="results" hidden aria-live="polite">
+      <div class="results-header">
+        <div>
+          <p class="eyebrow">Analysis complete</p>
+          <h2>Estimated ATS &amp; Job Match</h2>
+          <p>This is a transparent compatibility estimate, not a score from an employer’s ATS.</p>
+        </div>
+        <div class="score-ring" id="scoreRing" role="img" aria-label="Overall match score">
+          <strong id="overallScore">0%</strong><span>overall</span>
+        </div>
+      </div>
+
+      <div id="scoreCards" class="score-cards"></div>
+
+      <div class="result-layout">
+        <section class="panel requirement-panel">
+          <div class="panel-heading"><div><span class="step">Evidence map</span><h3>Requirements</h3></div><span id="requirementCount" class="counter"></span></div>
+          <div class="tabs" role="tablist" aria-label="Requirement status filters">
+            <button class="tab active" data-filter="all" type="button">All</button>
+            <button class="tab" data-filter="matched" type="button">Matched</button>
+            <button class="tab" data-filter="partial" type="button">Partial</button>
+            <button class="tab" data-filter="missing" type="button">Missing</button>
+            <button class="tab" data-filter="confirm" type="button">Confirm</button>
+          </div>
+          <div id="requirementList" class="requirement-list"></div>
+        </section>
+
+        <aside class="panel ats-panel">
+          <div class="panel-heading"><div><span class="step">Document check</span><h3>ATS structure</h3></div><strong id="formatScore">0%</strong></div>
+          <div id="formatIssues" class="issue-list"></div>
+        </aside>
+      </div>
+
+      <section class="panel recommendations-panel">
+        <div class="panel-heading"><div><span class="step">Next actions</span><h3>Recommendations</h3></div></div>
+        <div id="recommendations" class="recommendation-grid"></div>
+      </section>
+
+      <section class="panel improve-panel">
+        <div class="panel-heading improve-heading">
+          <div><span class="step">Fact-safe rewrite</span><h3>Improved CV draft</h3></div>
+          <div class="button-group">
+            <button class="ghost" id="copyButton" type="button">Copy</button>
+            <button class="ghost" id="txtButton" type="button">TXT</button>
+            <button class="ghost" id="docxButton" type="button">DOCX</button>
+            <button class="primary compact" id="pdfButton" type="button">Print / PDF</button>
+          </div>
+        </div>
+        <div class="integrity-note"><strong>Integrity check:</strong> verified terms may be reorganised or reworded, while missing skills stay in the gap list.</div>
+        <div class="comparison-grid">
+          <label><span>Original CV</span><textarea id="originalPreview" readonly></textarea></label>
+          <label><span>Improved draft <em>editable</em></span><textarea id="improvedCv"></textarea></label>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

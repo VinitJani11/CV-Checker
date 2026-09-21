@@ -1,0 +1,9 @@
+{
+  "name": "CV Match Studio",
+  "short_name": "CV Match",
+  "description": "Private, transparent CV-to-job matching in your browser.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#101827"
+}
